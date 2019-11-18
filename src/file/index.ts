@@ -1,0 +1,1 @@
+export { readJson } from './file';
