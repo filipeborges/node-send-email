@@ -1,3 +1,9 @@
-import './config';
+import { argv } from './config';
+import { sendEmail } from './email';
+import { readJson } from './file';
 
-console.log('Hello World!');
+readJson(argv.file)
+  .then(data => {
+    sendEmail(argv, data);
+  })
+  .catch(err => console.error(err));
