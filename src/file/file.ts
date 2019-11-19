@@ -15,5 +15,5 @@ export function readJson(jsonPath: string) {
       }
       return resolve(data);
     })
-  });
+  }) as Promise<string>;
 }

@@ -1,7 +1,14 @@
 import nodemailer from 'nodemailer';
 import Mail from 'nodemailer/lib/mailer';
+import { CmdLineParams } from '../config';
 
 let transporterInstance: Mail;
+
+function formatEmailRecepients(argv: CmdLineParams) {
+  return (argv.to as string[]).reduce(
+    (accumulator, recipient) => `${accumulator},${recipient}`
+  );
+}
 
 function createTransport() {
   if (!transporterInstance) {
@@ -18,14 +25,13 @@ function createTransport() {
   return transporterInstance;
 }
 
-export function sendEmail() {
+export function sendEmail(argv: CmdLineParams, htmlContent: string) {
   const transporter = createTransport();
 
   return transporter.sendMail({
     from: `Buscador Preços <${process.env.EMAIL_USER}>`,
-    to: 'filipebkc2209@gmail.com',
-    subject: 'Buscador de Preços',
-    text: 'Teste',
-    html: '<b>Teste</b>'
+    to: formatEmailRecepients(argv),
+    subject: argv.subject,
+    html: htmlContent
   });
 }
